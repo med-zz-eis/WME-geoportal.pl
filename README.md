@@ -29,8 +29,8 @@ The source file is hosted on [Github](https://github.com/med-zz-eis/WME-geoporta
 6. **Kategorie / Categories**: Warstwy są pogrupowane w zwijane kategorie (Ortofoto, Adresy, Podział Adm, BDOT).
 
 ## Changelog [1.5.0] - 2026-04-03
-*   **Wsparcie API Marzec 2026 / March 2026 API Support**: Pełna kompatybilność z nowym systemem kart ("Draggable Cards").
-*   **MutationObserver**: Stabilna obecność menu mimo przerywania renderowania przez WME.
-*   **Nowy interfejs UI / New UI layout**: Suwaki pod nazwami warstw, obsługa Dark Mode.
-*   **Wydajność / Performance**: Lazy loading (ładowanie tylko włączonych warstw) oraz filtracja poziomów przybliżenia (zoom).
+*   **Wsparcie API Marzec 2026 / March 2026 API Support**: Kompatybilność z nowym systemem kart ("Draggable Cards").
+*   **MutationObserver**: Zwiekszenie stabilnosci renderowania menu przez WME.
+*   **Nowy interfejs UI / New UI layout**: Dodano suwaki przezroczystości pod nazwami warstw, dodano obsługę Dark Mode.
+*   **Wydajność / Performance**: Dodano lazy loading (ładowanie tylko włączonych warstw) oraz filtrację poziomów przybliżenia (zoom).
 *   **Pamięć ustawień / Settings Persistence**: Automatyczne zapisywanie włączonych warstw i przezroczystości.
