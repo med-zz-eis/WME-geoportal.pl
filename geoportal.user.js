@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Geoportal Waze integration (fork by snPL)
-// @version         1.5.0
+// @version         1.5.1
 // @description     Adds geoportal.gov.pl overlays ("satellite view", house numbers, cities names) to WME (API March 2026)
 // @include         https://*.waze.com/*/editor*
 // @include         https://*.waze.com/editor*
@@ -21,6 +21,7 @@
  */
 
 /* Changelog:
+ *  1.5.1 - Allow selective opacity sliders (checkbox-only for boundaries/addresses).
  *  1.5.0 - Release (WME March 2026 API Update):
  *          - Complete refactor into ES6 Classes.
  *          - Full support for WME's new modular "Draggable Cards" UI.
@@ -42,7 +43,7 @@
 
   class GeoportalIntegration {
     constructor() {
-      this.ver = "1.5.0";
+      this.ver = "1.5.1";
       this.layers = {};
       this.settingsKey = 'wme_geoportal_settings';
       this.settings = this.loadSettings();
@@ -213,20 +214,20 @@
         this.createWMSLayer("Geoportal - OSM", this.WMS_SERVICES.osm, "osm", "image/png");
       }
 
-      this.createWMSLayer("Geoportal - adresy", this.WMS_SERVICES.adresy, "prg-adresy", "image/png", { minZ: 14 });
-      this.createWMSLayer("Geoportal - ulice", this.WMS_SERVICES.adresy, "prg-ulice", "image/png", { minZ: 14 });
-      this.createWMSLayer("Geoportal - place", this.WMS_SERVICES.adresy, "prg-place", "image/png", { minZ: 14 });
-      this.createWMSLayer("Geoportal - adresy, place i ulice w jednym", this.WMS_SERVICES.adresy, "prg-adresy,prg-place,prg-ulice", "image/png", { minZ: 14 });
+      this.createWMSLayer("Geoportal - adresy", this.WMS_SERVICES.adresy, "prg-adresy", "image/png", { minZ: 14, hasOpacity: false });
+      this.createWMSLayer("Geoportal - ulice", this.WMS_SERVICES.adresy, "prg-ulice", "image/png", { minZ: 14, hasOpacity: false });
+      this.createWMSLayer("Geoportal - place", this.WMS_SERVICES.adresy, "prg-place", "image/png", { minZ: 14, hasOpacity: false });
+      this.createWMSLayer("Geoportal - adresy, place i ulice w jednym", this.WMS_SERVICES.adresy, "prg-adresy,prg-place,prg-ulice", "image/png", { minZ: 14, hasOpacity: false });
 
       this.createWMSLayer("Geoportal - przejazdy kolejowe (wymagany duży zoom)", this.WMS_SERVICES.rail, "PMT_Linie_Kolejowe_Sp__z_o_o_,Kopalnia_Piasku_KOTLARNIA_-_Linie_Kolejowe_Sp__z__o_o_,Jastrzębska_Spółka_Kolejowa_Sp__z_o_o_,Infra_SILESIA_S_A_,EUROTERMINAL_Sławków_Sp__z_o_o_,Dolnośląska_Służba_Dróg_i_Kolei_we_Wrocławiu,CARGOTOR_Sp__z_o_o_,PKP_SKM_w_Trójmieście_Sp__z_o_o_,PKP_Linia_Hutnicza_Szerokotorowa_Sp__z_o__o_,PKP_Polskie_Linie_Kolejowe", "image/png", { minZ: 15 });
       this.createWMSLayer("Geoportal - drogi", this.WMS_SERVICES.mileage, "planowane,wbudowie,pikietaz,drugorzedne,glowne,ekspresowe,autostrady", "image/png", { minZ: 12 });
-      this.createWMSLayer("Geoportal - podział adm", this.WMS_SERVICES.parcels, "dzialki,numery_dzialek", "image/png", { minZ: 15 });
+      this.createWMSLayer("Geoportal - podział adm", this.WMS_SERVICES.parcels, "dzialki,numery_dzialek", "image/png", { minZ: 15, hasOpacity: false });
 
-      this.createWMSLayer("Geoportal - Miasta", this.WMS_SERVICES.border_city, "A06_Granice_obrebow_ewidencyjnych,A05_Granice_jednostek_ewidencyjnych,A04_Granice_miast", "image/png", { minZ: 12 });
-      this.createWMSLayer("Geoportal - gminy", this.WMS_SERVICES.border_city, "A03_Granice_gmin", "image/png", { minZ: 10 });
-      this.createWMSLayer("Geoportal - powiaty", this.WMS_SERVICES.border_city, "A02_Granice_powiatow", "image/png", { minZ: 10 });
-      this.createWMSLayer("Geoportal - województwa", this.WMS_SERVICES.border_city, "A01_Granice_wojewodztw", "image/png", { minZ: 8 });
-      this.createWMSLayer("Geoportal - Granica PL", this.WMS_SERVICES.border_city, "A00_Granice_panstwa", "image/png", { minZ: 0 });
+      this.createWMSLayer("Geoportal - Miasta", this.WMS_SERVICES.border_city, "A06_Granice_obrebow_ewidencyjnych,A05_Granice_jednostek_ewidencyjnych,A04_Granice_miast", "image/png", { minZ: 12, hasOpacity: false });
+      this.createWMSLayer("Geoportal - gminy", this.WMS_SERVICES.border_city, "A03_Granice_gmin", "image/png", { minZ: 10, hasOpacity: false });
+      this.createWMSLayer("Geoportal - powiaty", this.WMS_SERVICES.border_city, "A02_Granice_powiatow", "image/png", { minZ: 10, hasOpacity: false });
+      this.createWMSLayer("Geoportal - województwa", this.WMS_SERVICES.border_city, "A01_Granice_wojewodztw", "image/png", { minZ: 8, hasOpacity: false });
+      this.createWMSLayer("Geoportal - Granica PL", this.WMS_SERVICES.border_city, "A00_Granice_panstwa", "image/png", { minZ: 0, hasOpacity: false });
 
       this.createWMSLayer("Geoportal - obiekty topograficzne", this.WMS_SERVICES.topo, "bdot", "image/png", { minZ: 16 });
 
@@ -264,6 +265,7 @@
       };
       this.layers[name] = {
         definition: { name, url, layers, format, options },
+        hasOpacity: options.hasOpacity !== false,
         instance: null,
         opacity: this.settings.layerOpacity[name] ?? 1.0,
         isEnabled: this.settings.enabledLayers[name] ?? false,
@@ -372,28 +374,31 @@
         lData.setVisibility(e.target.checked);
         this.saveSettings();
       });
-      const sliderContainer = document.createElement('div');
-      sliderContainer.className = 'geoportal-slider-container';
-      const slider = document.createElement('input');
-      slider.type = 'range'; slider.className = 'geoportal-opacity-slider';
-      slider.min = "0"; slider.max = "100";
-      slider.value = (lData.opacity * 100).toString();
-      const opacityVal = document.createElement('span');
-      opacityVal.className = 'geoportal-opacity-value';
-      opacityVal.innerText = (Math.round(lData.opacity * 100)).toString() + "%";
-      slider.addEventListener('input', (e) => {
-        const val = parseInt(e.target.value) / 100;
-        lData.setOpacity(val);
-        opacityVal.innerText = e.target.value + "%";
-        if (val > 0 && !lData.isEnabled) {
-          checkbox.checked = true; lData.setVisibility(true); this.saveSettings();
-        } else if (val === 0 && lData.isEnabled) {
-          checkbox.checked = false; lData.setVisibility(false); this.saveSettings();
-        }
-      });
-      slider.addEventListener('change', () => this.saveSettings());
-      sliderContainer.appendChild(slider); sliderContainer.appendChild(opacityVal);
-      control.appendChild(checkbox); control.appendChild(sliderContainer);
+      control.appendChild(checkbox);
+      if (lData.hasOpacity) {
+        const sliderContainer = document.createElement('div');
+        sliderContainer.className = 'geoportal-slider-container';
+        const slider = document.createElement('input');
+        slider.type = 'range'; slider.className = 'geoportal-opacity-slider';
+        slider.min = "0"; slider.max = "100";
+        slider.value = (lData.opacity * 100).toString();
+        const opacityVal = document.createElement('span');
+        opacityVal.className = 'geoportal-opacity-value';
+        opacityVal.innerText = (Math.round(lData.opacity * 100)).toString() + "%";
+        slider.addEventListener('input', (e) => {
+          const val = parseInt(e.target.value) / 100;
+          lData.setOpacity(val);
+          opacityVal.innerText = e.target.value + "%";
+          if (val > 0 && !lData.isEnabled) {
+            checkbox.checked = true; lData.setVisibility(true); this.saveSettings();
+          } else if (val === 0 && lData.isEnabled) {
+            checkbox.checked = false; lData.setVisibility(false); this.saveSettings();
+          }
+        });
+        slider.addEventListener('change', () => this.saveSettings());
+        sliderContainer.appendChild(slider); sliderContainer.appendChild(opacityVal);
+        control.appendChild(sliderContainer);
+      }
       item.appendChild(control); return item;
     }
 
