@@ -12,6 +12,8 @@
 // @license         MIT
 // @icon            https://www.google.com/s2/favicons?sz=64&domain=waze.com
 // @namespace       https://github.com/med-zz-eis/WME-geoportal.pl
+// @downloadURL     https://update.greasyfork.org/scripts/572377/Geoportal%20Waze%20integration%20%28fork%20by%20snPL%29.user.js
+// @updateURL       https://update.greasyfork.org/scripts/572377/Geoportal%20Waze%20integration%20%28fork%20by%20snPL%29.meta.js
 // ==/UserScript==
 
 /**
